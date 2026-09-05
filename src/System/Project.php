@@ -165,7 +165,7 @@
 				\App\System\Session::push_history($route);
 			});
 
-			\App\System\Events\Manager::getEvent("sysntem.onBooted")->dispatch();
+			\App\System\Events\Manager::getEvent("system.onBooted")->dispatch();
 
 			abort_if(!\App\System\Router\CSRFVerifier::get()->validateRequest(\App\System\Http\ServerRequest::get()), 403);
 			\App\System\Router\Router::start();

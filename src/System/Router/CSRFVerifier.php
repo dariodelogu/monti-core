@@ -88,7 +88,7 @@
             }
 
             $method = $params['REQUEST_METHOD'];
-            if($method === 'POST' || $method === 'PUT' || $method === 'DELETE') {
+            if(in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
                 $token = $_POST[$this->key] ?? $params['HTTP_X_CSRF_TOKEN'] ?? '';
                 return hash_equals($this->getToken(), $token);
             }

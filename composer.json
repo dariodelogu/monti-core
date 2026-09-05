@@ -1,5 +1,5 @@
 {
-    "name": "dariodelogu/monti-framework-core",
+    "name": "dariodelogu/monti-core",
     "type": "library",
     "description": "Monti PHP framework core",
     "autoload": {

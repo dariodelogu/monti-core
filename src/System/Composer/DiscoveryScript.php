@@ -13,16 +13,16 @@ class DiscoveryScript
 
         $installedJsonPath = $vendorDir . '/composer/installed.json';
 
-        if (!is_file($installedJsonPath)) {
+        if(!is_file($installedJsonPath)) {
             return;
         }
 
         $data = json_decode(file_get_contents($installedJsonPath), true, flags: JSON_THROW_ON_ERROR);
-        $packages = $data['packages'] ?? $data; // Composer 2.x annida sotto 'packages'
+        $packages = $data['packages'] ?? $data; // Composer 2.x nests packages under 'packages'
 
         $exclude = [];
         $classes = [];
-        foreach ($packages as $package) {
+        foreach($packages as $package) {
             if (in_array($package['name'] ?? null, $exclude, true)) {
                 continue;
             }
@@ -38,13 +38,13 @@ class DiscoveryScript
         $export = var_export($classes, true);
 
         $cacheDir = $baseDir . '/cache';
-        if (!is_dir($cacheDir)) {
+        if(!is_dir($cacheDir)) {
             mkdir($cacheDir, recursive: true);
         }
 
         file_put_contents(
             $cacheDir . '/providers.php',
-            "<?php\n\n// File generato automaticamente, non modificare a mano.\nreturn {$export};\n"
+            "<?php\n\n// Auto-generated file, do not edit by hand.\nreturn {$export};\n"
         );
 
         $event->getIO()->write(sprintf('Discovered %d provider(s).', count($classes)));

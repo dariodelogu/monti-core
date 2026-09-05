@@ -61,9 +61,10 @@
 		/**
 		 * Starts and wraps the code inside a database transaction.
 		 * NOTE: Requires a compatible storage engine.
-		 * $closure must ever return true on success, otherwise result will always be false
+		 * $closure must return true on success: any other return value, or a thrown
+		 * exception, rolls back everything the closure did within the transaction.
 		 * $closure will have the transaction stdClass as first argument
-		 * 
+		 *
 		 * @example
 		 * \App\System\Database::tansaction(function($transaction) {\
 		 *     ...\
@@ -79,12 +80,17 @@
 			$transaction->result = false;
 			$transaction->error = null;
 
-			self::orm()->connection($connection)->transaction(function() use ($closure, $transaction) {
+			self::orm()->connection($connection)->transaction(function($conn) use ($closure, $transaction) {
 				try {
 					$transaction->result = $closure($transaction) ?? false;
 				}
 				catch(\Throwable $t) {
 					$transaction->error = $t;
+				}
+				if($transaction->result !== true) {
+					//closure failed (returned something other than true) or threw: roll back what it already did.
+					// Eloquent's transaction() only auto-rollbacks on an uncaught exception, so this has to be explicit.
+					$conn->rollBack();
 				}
 			});
 			return $transaction;
