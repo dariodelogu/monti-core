@@ -11,8 +11,8 @@
         {
             $time = $this->parameter('time');
             $target_date = $time;
-            if(input()->exists($time)) {
-                $target_date = input($time);
+            if($this->validation->input()->has($time)) {
+                $target_date = $this->validation->input()->get($time);
             }
             try {
                 $date_1 = new \DateTime($value);

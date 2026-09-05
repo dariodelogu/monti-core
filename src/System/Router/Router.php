@@ -351,6 +351,8 @@
 			$middlewares_dispatcher = new MiddlewaresDispatcher($route->getMiddlewares(), $handler);
 			$response = $middlewares_dispatcher->handle(\App\System\Http\ServerRequest::get());
 
+			\App\System\Events\Manager::getEvent("router.onRouteHandled")->dispatch($route, $response);
+
 			if($response instanceof \App\System\Http\RedirectResponse) {
 				$response->send();
 			}

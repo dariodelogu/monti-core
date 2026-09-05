@@ -13,6 +13,7 @@
 	if(isset($options["remoteURL"])) {
 		$options["fromRemote"] = true;
 	}
+	$options["name"] = $var_name;
 ?>
 <?php if($advanced): ?>
 	<?php $this->start_style() ?>

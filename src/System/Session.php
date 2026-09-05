@@ -115,9 +115,9 @@
 		/**
 		 * Adds navigation history to session.
 		 *
-		 * @param      \Pecee\Http\Url  $url
+		 * @param      \App\System\Router\Route  $route
 		 *
-		 * @return     bool  Tue on success, False otherwise
+		 * @return     bool  True on success, False otherwise
 		 */
 		public static function push_history(\App\System\Router\Route $route) {
 			if(strtoupper(\App\System\Http\ServerRequest::get()->getMethod()) !== "GET") {

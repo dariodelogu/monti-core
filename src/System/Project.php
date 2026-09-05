@@ -161,7 +161,11 @@
 				include $project_routes;
 			}
 
-			\App\System\Events\Manager::getEvent("router.onRouteMatch")->addListener(function($route) {
+			\App\System\Events\Manager::getEvent("router.onRouteHandled")->addListener(function($route, $response) {
+				//a redirect isn't a page the user actually saw
+				if($response instanceof \App\System\Http\RedirectResponse) {
+					return;
+				}
 				\App\System\Session::push_history($route);
 			});
 
