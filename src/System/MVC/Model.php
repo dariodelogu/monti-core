@@ -8,7 +8,7 @@
 					"deleted_at" => "datetime",
 					"deletion_user" => "integer"
 				],
-				$connection = "tenant"
+				$connection = "default"
 		;
 	
 		protected static function boot() {
@@ -20,7 +20,7 @@
 		 * Illuminate\Database\Eloquent\SoftDeletes updates deleted_at only
 		 * See main/System/Observers/ModelsObserver.php deleting()
 		 */
-		public function _delete(?string $date = null, string $connection = "tenant") {
+		public function _delete(?string $date = null, string $connection = "default") {
 			if(\DB::connection($connection)->getSchemaBuilder()->hasColumn($this->table, 'deleted_at')) {
 				$this->deleted_at = $date ?? date("Y-m-d H:i:s");
 			}

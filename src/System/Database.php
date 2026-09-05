@@ -53,7 +53,7 @@
 		 *
 		 * @return     bool    True if table exists, False otherwise.
 		 */
-		public static function tableExists($table, $connection = "tenant") : bool {
+		public static function tableExists($table, $connection = "default") : bool {
 			$sql = self::orm()->connection($connection)->select("SHOW TABLES LIKE '" . $table . "'");
 			return count($sql) > 0;
 		}
@@ -75,7 +75,7 @@
 		 *
 		 * @return     mixed
 		 */
-		public static function transaction(\closure $closure, string $connection = "tenant") {
+		public static function transaction(\closure $closure, string $connection = "default") {
 			$transaction = new \stdClass();
 			$transaction->result = false;
 			$transaction->error = null;
@@ -111,8 +111,8 @@
 		 * @return     mixed
 		 */
 		public static function __callStatic(string $name, array $arguments) {
-			if(self::hasConnection("tenant")) {
-				self::orm()->getDatabaseManager()->setDefaultConnection("tenant");
+			if(self::hasConnection("default")) {
+				self::orm()->getDatabaseManager()->setDefaultConnection("default");
 			}
 			if(method_exists(self::orm(), $name)) {
 				return self::orm()->$name(...$arguments);

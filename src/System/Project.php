@@ -138,9 +138,9 @@
 
 			\App\System\MVC\View\View::initSourcePaths();
 
-			$conf = config("connections.tenant", null);
+			$conf = config("connections.default", null);
 			if($conf !== null) {
-				\App\System\Database::addConnection($conf, "tenant");
+				\App\System\Database::addConnection($conf, "default");
 			}
 
 			\App\System\Session::start();
